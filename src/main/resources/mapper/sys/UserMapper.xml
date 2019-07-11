@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxy.heritage.sys.dao.UserMapper">
+
+    <!--返回不带密码-->
+    <sql id="Base_Column_List">
+        user_id as userId, user_name as userName, sex,school_id as schoolId, phone, telephone, area, address, political, educational,
+        identity_card as identityCard, image, mycontext, regist_date as registDate
+    </sql>
+
+    <!--返回带密码  加盐-->
+    <sql id="Password_Column_List">
+        user_id as userId, user_name as userName, sex,school_id as schoolId, phone, telephone, area, address, political, educational,
+        identity_card as identityCard, image, mycontext, regist_date as registDate, password, salt
+    </sql>
+
+    <!--通过id/电话号码查找用户-->
+    <select id="selectByIdOrPhone" resultType="com.yxy.heritage.sys.bean.User">
+        select
+        <include refid="Password_Column_List"/>
+        from edu_user
+        where 1=1
+        <if test="userId != null">
+            and user_id=#{userId}
+        </if>
+        <if test="phone != null">
+            and phone=#{phone}
+        </if>
+    </select>
+
+    <!--用户注册-->
+    <insert id="registUser" parameterType="com.yxy.heritage.sys.bean.User" useGeneratedKeys="true"
+            keyProperty="userId">
+        insert  into edu_user(user_name, phone, password, salt, regist_date) values(#{userName}, #{phone}, #{password}, #{salt}, #{registDate});
+    </insert>
+
+    <update id="updatePwdByPhone" >
+        update edu_user set password = #{password} where phone=#{phone}
+    </update>
+
+    <update id="updatePhone" >
+        update edu_user set phone = #{newPhone} where phone=#{oldPhone}
+    </update>
+
+</mapper>

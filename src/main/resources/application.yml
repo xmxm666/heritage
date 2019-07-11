@@ -1,0 +1,13 @@
+spring:
+  profiles:
+    active: dev
+
+#Mybatis配置
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.yxy.heritage.sys.bean
+
+logging:
+  config: classpath:logback-spring.xml
