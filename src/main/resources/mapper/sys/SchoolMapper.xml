@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxy.heritage.sys.dao.SchoolMapper">
+
+
+    <sql id="Base_Column_List">
+        school_id, school_name, admin_id, longitude, latitude, image, school_char, is_using, slideshow
+    </sql>
+    <resultMap id="BaseResultMap" type="com.yxy.heritage.sys.bean.School">
+        <id column="school_id" jdbcType="INTEGER" property="schoolId"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="admin_id" jdbcType="INTEGER" property="adminId"/>
+        <result column="longitude" jdbcType="VARCHAR" property="longitude"/>
+        <result column="latitude" jdbcType="VARCHAR" property="latitude"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="school_char" jdbcType="VARCHAR" property="schoolChar"/>
+        <result column="is_using" jdbcType="INTEGER" property="isUsing"/>
+        <result column="slideshow" jdbcType="VARCHAR" property="slideshow"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from edu_school
+        where school_id = #{schoolId}
+    </select>
+
+    <select id="selectSchoolList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from edu_school
+        where is_using = 1
+        <if test="schoolId != null and schoolId != ''">
+            AND school_id = #{schoolId}
+        </if>
+        <if test="search != null and search != ''">
+            AND school_name like CONCAT('%',#{search},'%')
+        </if>
+    </select>
+
+    <insert id="createSchool" parameterType="com.yxy.heritage.sys.bean.School" useGeneratedKeys="true"
+            keyProperty="schoolId">
+        insert into edu_school(school_name, admin_id, longitude, latitude, image, school_char, is_using, slideshow)
+        values (#{schoolName}, #{adminId}, #{longitude}, #{latitude}, #{image}, #{schoolChar}, #{isUsing}, #{slideshow})
+    </insert>
+
+
+    <update id="updateSchool" parameterType="com.yxy.heritage.sys.bean.School">
+        update edu_school e
+        set school_name = #{schoolName},
+        longitude = #{longitude},
+        latitude = #{latitude},
+        <if test="image != null and image != ''">
+            image = #{image},
+        </if>
+        <if test="slideshow != null and slideshow != ''">
+            slideshow = #{slideshow},
+        </if>
+        school_char = #{schoolChar}
+        where school_id = #{schoolId}
+    </update>
+
+    <!--是否启用学校-->
+    <update id="isUsingSchool" parameterType="com.yxy.heritage.sys.bean.School">
+        update edu_school e
+        set is_using = #{isUsing}
+        where school_id = #{schoolId}
+    </update>
+
+    <!--查询学校坐标-vvtxw-->
+    <select id="queryRecordBySchoolId" resultType="com.yxy.heritage.sys.bean.School">
+        SELECT
+	     longitude,
+	     latitude,
+	     image
+	    from
+	     edu_school
+	  WHERE school_id=#{schoolId}
+    </select>
+    <select id="selectSchoolAll" resultType="com.yxy.heritage.sys.bean.School">
+       SELECT  school_id as schoolId, school_name as schoolName,school_char as schoolChar, image
+       from  edu_school
+       where is_using = 1;
+    </select>
+    <update id="switchSchoolID" parameterType="int">
+        update edu_user
+        set school_id=#{schoolId}
+        where user_id=#{userId}
+    </update>
+
+    <!--查询学校轮播图-->
+    <select id="findSlideshowAll" parameterType="int" resultType="com.yxy.heritage.sys.bean.School">
+          select *
+          from   edu_school
+          where school_id=#{schoolId}
+
+    </select>
+
+    <!--查询所有学校名和对应学校ID-vvtxw-->
+    <select id="findSchoolAll" resultType="com.yxy.heritage.sys.bean.School">
+        select * from edu_school
+    </select>
+
+
+    <!--根据学校Id查找对应的学校-vvtxw-->
+    <select id="findSchoolById" parameterType="int" resultType="java.lang.String">
+        select school_name from edu_school where school_id=#{schoolId}
+    </select>
+
+    <delete id="deleteSchool">
+        delete from edu_school where school_id = #{schoolId}
+    </delete>
+
+</mapper>

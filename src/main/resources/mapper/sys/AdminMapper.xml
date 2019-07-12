@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxy.heritage.sys.dao.AdminMapper" >
+
+    <sql id="Base_Column_List">
+        admin_id as adminId, name, password, phone, image, role, school_id as schoolId, salt, regist_date as registDate
+    </sql>
+
+    <select id="selectByPhoneOrId"  resultType="com.yxy.heritage.sys.bean.Admin">
+        select
+        <include refid="Base_Column_List"/>
+        from edu_admin
+        where 1=1
+        <if test="adminId != null">
+            and admin_id=#{adminId}
+        </if>
+        <if test="phone != null">
+            and phone=#{phone}
+        </if>
+    </select>
+
+    <insert id="creatAdmin" parameterType="com.yxy.heritage.sys.bean.Admin" useGeneratedKeys="true" keyProperty="adminId">
+         insert into edu_admin(name, password, phone, image, role, school_id, salt, regist_date)
+         values (#{name}, #{password}, #{phone}, #{image}, #{role}, #{schoolId}, #{salt}, #{registDate})
+    </insert>
+
+    <update id="updateByAdmin" parameterType="com.yxy.heritage.sys.bean.Admin">
+        update edu_admin
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="image != null">
+                image = #{image},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+            <if test="schoolId != null">
+                school_id = #{schoolId},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
+            </if>
+            <if test="registDate != null">
+                regist_date = #{registDate},
+            </if>
+        </set>
+        where admin_id = #{adminId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteById" parameterType="java.lang.Integer">
+        delete from edu_admin
+        where admin_id = #{adminId}
+  </delete>
+
+    <select id="selectByAdminList"  resultType="com.yxy.heritage.sys.vo.AdminVo">
+        select
+        a.admin_id adminId, a.name, a.phone, a.image, a.role, a.school_id schoolId, s.school_name as schoolName
+        from edu_admin a
+        LEFT JOIN edu_school s on a.school_id = s.school_id
+        where 1=1
+        <if test="schoolId != null">
+            and a.school_id = #{schoolId}
+        </if>
+    </select>
+
+</mapper>

@@ -24,6 +24,16 @@ public class PageVo {
 
     private Integer userId;
 
+    private Integer isFree;
+
+    public Integer getIsFree() {
+        return isFree;
+    }
+
+    public void setIsFree(Integer isFree) {
+        this.isFree = isFree;
+    }
+
     public int getPageSize() {
         return pageSize;
     }
