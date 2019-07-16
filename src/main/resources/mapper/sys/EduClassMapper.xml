@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxy.heritage.sys.dao.EduClassMapper">
+
+    <insert id="insert" parameterType="com.yxy.heritage.sys.bean.EduClass">
+    insert into edu_class_schedule (class_schedule_id, course_ids, week, 
+      start_time, end_time)
+    values (#{classScheduleId,jdbcType=INTEGER}, #{courseIds,jdbcType=INTEGER}, #{week,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR})
+  </insert>
+
+
+    <!--查询课程时间信息-->
+    <select id="queryCourseTimeByCourseId" parameterType="int" resultType="com.yxy.heritage.sys.bean.EduClass">
+        select
+        c.start_date,
+        c.end_date,
+        e2.dict_name week,
+        e3.start_time,
+        e3.end_time
+        from edu_class_schedule  e3
+        LEFT JOIN edu_dict e2 on e2.dict_value=e3.week
+        LEFT JOIN edu_course c on e3.course_ids=c.course_id
+        where course_id =#{courseId}
+  </select>
+</mapper>
