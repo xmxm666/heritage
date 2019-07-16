@@ -50,10 +50,10 @@ public class UserServiceImpl implements UserService {
             return new WebResult("400", "该用户已注册");
         }
         //验证手机号，密码，验证码是否正确
-        WebResult checkPhone = checkPhone(user.getPhone(), user.getPassword(), user.getSecurityCode());
-        if (checkPhone != null) {
-            return checkPhone;
-        }
+//        WebResult checkPhone = checkPhone(user.getPhone(), user.getPassword(), user.getSecurityCode());
+//        if (checkPhone != null) {
+//            return checkPhone;
+//        }
 
         if (StringUtils.isBlank(user.getNextPass())) {
             return new WebResult("400", "确认密码不能为空！", "");

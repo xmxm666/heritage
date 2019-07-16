@@ -1,0 +1,58 @@
+package com.yxy.heritage.sys.service.impl;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.yxy.heritage.http.result.WebResult;
+import com.yxy.heritage.sys.bean.Suggestions;
+import com.yxy.heritage.sys.dao.SuggestionsMapper;
+import com.yxy.heritage.sys.service.SuggestionsService;
+import com.yxy.heritage.sys.vo.SuggestionsVo;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+/*
+   意见反馈实现类
+ */
+@Service
+public class SuggestionsServiceImpl implements SuggestionsService {
+      @Resource
+      private SuggestionsMapper suggestionsMapper;
+
+    @Transactional
+    @Override
+    public WebResult submitSuggestions(Suggestions suggestions) {
+        Date date=new Date();
+        suggestions.setCreateTime(date);
+        suggestionsMapper.submitSuggestions(suggestions);
+
+        return new WebResult("200","提交成功","");
+    }
+
+    @Override
+    public WebResult SuggestionsList(SuggestionsVo suggestionsVo) {
+        if (suggestionsVo.getPageSize() == 0) {
+          List<Suggestions> suggestionsList = suggestionsMapper.SuggestionsList(suggestionsVo);
+            return new WebResult("200", "查询成功", suggestionsList);
+        }
+        PageHelper.startPage(suggestionsVo.getPageNum(), suggestionsVo.getPageSize());
+        List<Suggestions> suggestionsList = suggestionsMapper.SuggestionsList(suggestionsVo);
+        PageInfo pageInfo = new PageInfo<>(suggestionsList);
+        return new WebResult("200", "查询成功", pageInfo);
+    }
+
+    @Override
+    public WebResult deleteSuggestions(Integer id) {
+         suggestionsMapper.deleteSuggestions(id);
+        return new WebResult("200", "删除成功", "");
+    }
+
+    @Override
+    public WebResult bigDeleteSuggestions(Integer[] ids) {
+        suggestionsMapper.bigDeleteSuggestions(ids);
+        return new WebResult("200", "批量删除成功", "");
+    }
+}
