@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxy.heritage.sys.dao.EduCourseMapper">
+
+    <sql id="Base_Column_List">
+        course_id as courseId, course_name as courseName, course_price as coursePrice, course_teacher as courseTeacher,
+        place_class as placeClass, start_date as startDate, end_date as endDate,
+        people_number as peopleNumber, school_id schoolId, isenable
+    </sql>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.yxy.heritage.sys.bean.EduCourse">
+        update edu_course
+        <set>
+            <if test="courseName != null">
+                course_name = #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="coursePrice != null">
+                course_price = #{coursePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="courseTeacher != null">
+                course_teacher = #{courseTeacher,jdbcType=VARCHAR},
+            </if>
+            <if test="placeClass != null">
+                place_class = #{placeClass,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate,jdbcType=DATE},
+            </if>
+            <if test="peopleNumber != null">
+                people_number = #{peopleNumber,jdbcType=INTEGER},
+            </if>
+            <if test="schoolId != null">
+                school_id = #{schoolId,jdbcType=VARCHAR},
+            </if>
+            <if test="isenable != null">
+                isenable = #{isenable,jdbcType=INTEGER},
+            </if>
+        </set>
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+
+
+    <!--1.查找专业类别-->
+    <select id="listCourseCategoryByShoolId" parameterType="com.yxy.heritage.sys.bean.EduCourse"
+            resultType="com.yxy.heritage.sys.bean.EduCourse">
+        select * from edu_course where school_id =#{schoolId} and isenable=#{isenable}
+    </select>
+
+    <!--2.查找专业相关报名信息-->
+    <select id="queryCourseByCourseId" parameterType="int" resultType="com.yxy.heritage.sys.vo.EduCourseVo">
+       select
+            c.course_id,
+            c.course_name,
+            c.course_price,
+            e1.school_name schoolId,
+            e2.name course_teacher,
+            c.place_class,
+			c.course_price,
+			c.place_class,
+			c.start_date,
+			c.end_date,
+			c.people_number
+        from edu_course c
+        left join edu_school e1 on c.school_id=e1.school_id
+        left join edu_admin e2 on c.course_teacher=e2.admin_id
+        where course_id =#{course_id}
+    </select>
+
+    <!--3.查询每个科目可以报名的人数-->
+    <select id="queryAcceptNum" parameterType="int" resultType="int">
+        select
+        people_number
+        from edu_course
+        WHERE course_id=#{course_id}
+    </select>
+
+
+    <!--4.课程表-->
+    <select id="queryAllTimetable" resultType="com.yxy.heritage.sys.vo.EduCourseVo">
+     		SELECT
+					*
+				from
+				(
+					 select
+                        c.course_id,
+						e1.school_id,
+						e1.school_name school_name,
+						e3.week,
+                        c.course_name,
+                        e2.name course_teacher,
+                        c.place_class,
+						e3.start_time,
+						e3.end_time
+             from edu_course c
+                left join edu_school e1 on c.school_id=e1.school_id
+                left join edu_admin e2 on c.course_teacher=e2.admin_id
+				LEFT JOIN edu_class_schedule e3 on e3.course_ids=c.course_id
+				) p
+				where week=#{week} and school_id=#{schoolId};
+    </select>
+
+
+    <!--3.查询每个科目可以报名的人数-->
+    <select id="selectCourseIdBySchoolId" parameterType="int" resultType="int">
+                    select
+                        course_id
+                        from
+                        edu_course
+                    where
+                      school_id=#{schoolId}
+    </select>
+
+
+    <!--4.查询科目相关信息-->
+    <select id="queryCourseInfo" parameterType="int" resultType="com.yxy.heritage.sys.vo.EduCourseVo">
+                  select
+                    c.course_id,
+                    c.course_name,
+                    c.course_price,
+                    a.school_name,
+                    a.school_id,
+                    d.name
+                from edu_course c
+                LEFT JOIN edu_school a on a.school_id=c.school_id
+                LEFT join edu_admin d on  d.admin_id = c.course_teacher
+                where course_id =#{courseId}
+    </select>
+
+    <select id="selectCourseListBySchoolId" parameterType="com.yxy.heritage.sys.vo.PageCourseVo" resultType="com.yxy.heritage.sys.bean.EduCourse">
+        select
+        <include refid="Base_Column_List"/>
+        from edu_course
+        where 1=1
+        <if test="schoolId != null">
+            AND school_id = #{schoolId}
+        </if>
+        <if test="isenable != null">
+            AND isenable = #{isenable}
+        </if>
+        <if test="startDate != null">
+            <![CDATA[ and  start_date >= #{startDate}]]>
+        </if>
+        <if test="endDate != null">
+            <![CDATA[ and  start_date <= #{endDate}]]>
+        </if>
+        <if test="search != null and search != ''">
+            AND course_name like CONCAT('%',#{search},'%')
+        </if>
+        order by isenable desc, start_date desc
+    </select>
+
+    <!--添加课程-->
+    <insert id="insertCourse" parameterType="com.yxy.heritage.sys.bean.EduCourse"
+            useGeneratedKeys="true" keyProperty="courseId">
+        insert into edu_course (course_name, course_price,
+          course_teacher, place_class, start_date,
+          end_date, people_number, school_id, isenable
+          )
+        values (#{courseName,jdbcType=VARCHAR}, #{coursePrice,jdbcType=DECIMAL},
+          #{courseTeacher,jdbcType=VARCHAR}, #{placeClass,jdbcType=VARCHAR}, #{startDate,jdbcType=DATE},
+          #{endDate,jdbcType=DATE}, #{peopleNumber,jdbcType=INTEGER}, #{schoolId,jdbcType=VARCHAR}, #{isenable,jdbcType=INTEGER}
+          )
+    </insert>
+
+    <!--根据课程id查找课程-->
+    <select id="selectByCourseId" parameterType="java.lang.Integer" resultType="com.yxy.heritage.sys.vo.EduCourseVo">
+        select
+        <include refid="Base_Column_List"/>
+        from edu_course
+        where course_id = #{courseId}
+    </select>
+
+    <!--根据课程id查找课程详细信息-->
+    <select id="selectClassByCourseId" parameterType="java.lang.Integer" resultType="com.yxy.heritage.sys.bean.EduClass">
+        select class_schedule_id as classScheduleId, course_ids as courseIds, week, start_time as startTime, end_time as endTime
+        from edu_class_schedule
+        where course_ids = #{courseId}
+    </select>
+
+    <!--修改课程信息-->
+    <update id="updateCourseByCourseId" parameterType="com.yxy.heritage.sys.bean.EduCourse">
+        update edu_course
+        <set>
+            <if test="courseName != null">
+                course_name = #{courseName,jdbcType=VARCHAR},
+            </if>
+            <if test="coursePrice != null">
+                course_price = #{coursePrice,jdbcType=DECIMAL},
+            </if>
+            <if test="courseTeacher != null">
+                course_teacher = #{courseTeacher,jdbcType=VARCHAR},
+            </if>
+            <if test="placeClass != null">
+                place_class = #{placeClass,jdbcType=VARCHAR},
+            </if>
+            <if test="startDate != null">
+                start_date = #{startDate,jdbcType=DATE},
+            </if>
+            <if test="endDate != null">
+                end_date = #{endDate,jdbcType=DATE},
+            </if>
+            <if test="peopleNumber != null">
+                people_number = #{peopleNumber,jdbcType=INTEGER},
+            </if>
+            <if test="schoolId != null">
+                school_id = #{schoolId,jdbcType=VARCHAR},
+            </if>
+            <if test="isenable != null">
+                isenable = #{isenable,jdbcType=INTEGER},
+            </if>
+        </set>
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteClassByCourseId">
+        delete from edu_class_schedule where course_ids = #{courseId}
+    </delete>
+
+    <delete id="deleteCourseById" parameterType="java.lang.Integer">
+        delete from edu_course
+        where course_id = #{courseId,jdbcType=INTEGER}
+    </delete>
+</mapper>
