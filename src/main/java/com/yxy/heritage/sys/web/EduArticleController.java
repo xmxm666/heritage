@@ -32,7 +32,7 @@ public class EduArticleController {
     private UserService userService;
 
     /**
-     * 1-通知公告, 3-校园介绍,  4-联盟资讯,   5-政策法规
+     * 1-集展活动, 3-公司介绍,  4-加盟资讯,   5-作品展示  ，6.名家风采
      *
      * @param pageVo
      * @return
@@ -43,17 +43,14 @@ public class EduArticleController {
         return eduArticleService.queryAllNotice(pageVo);
     }
     /**
-     * 1-通知公告, 3-校园介绍,  4-联盟资讯,   5-政策法规
+     * 1-通知公告, 3-公司介绍,  4-联盟资讯,   5-作品展示    6-名家风采
      *
      * @param pageVo
      * @return
      */
     @PostMapping(value = "/her/notice")
     public WebResult queryAllNotice(HttpServletRequest request, @RequestBody PageVo pageVo) {
-        String schoolId = request.getHeader("schoolId");
-        if(!StringUtils.isBlank(schoolId) && !schoolId.equals("null")) {
-            pageVo.setSchoolId(Integer.valueOf(schoolId));
-        }
+
         return eduArticleService.queryAllNotice(pageVo);
     }
 
@@ -69,7 +66,7 @@ public class EduArticleController {
     }
 
     /**
-     * 后台添加 修改  1-通知公告, 3-校园介绍,  4-联盟资讯,   5-政策法规
+     * 后台添加 修改  1-集展活动, 3-公司介绍,  4-加盟资讯,   5-作品展示  ，6.名家风采
      *
      * @param eduArticle
      * @return

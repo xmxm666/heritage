@@ -34,7 +34,7 @@ public class WorksShowController {
      */
     @PostMapping(value = "/her/findUserShowAll")
     public WebResult findUserShowAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
-            pageVo.setType("7");
+            pageVo.setType("5");
         return worksShowService.findUserShowAll(pageVo);
 
 }
@@ -46,7 +46,7 @@ public class WorksShowController {
      */
     @PostMapping(value = "/server/findUserShowAll")
     public WebResult serverUserShowAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
-        pageVo.setType("7");
+        pageVo.setType("5");
         return worksShowService.findUserShowAll(pageVo);
 
     }
@@ -59,7 +59,7 @@ public class WorksShowController {
      */
     @PostMapping(value = "/her/findTeacherShowAll")
     public WebResult findTeacherShowAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
-            pageVo.setType("8");
+            pageVo.setType("6");
             return worksShowService.findUserShowAll(pageVo);
 
 }
@@ -72,7 +72,7 @@ public class WorksShowController {
      */
     @PostMapping(value = "/server/findTeacherShowAll")
     public WebResult serverTeacherShowAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
-        pageVo.setType("8");
+        pageVo.setType("6");
         return worksShowService.findUserShowAll(pageVo);
 
     }
@@ -85,7 +85,7 @@ public class WorksShowController {
      */
     @PostMapping(value = "/her/findIndexShowAll")
     public WebResult findIndexShowAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
-        pageVo.setType("7");
+        pageVo.setType("6");
         return worksShowService.findIndexShowAll(pageVo);
 
     }
@@ -97,7 +97,7 @@ public class WorksShowController {
      */
     @PostMapping(value = "/her/TeacherIndexShowAll")
     public WebResult TeacherIndexShowAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
-        pageVo.setType("8");
+        pageVo.setType("6");
         return worksShowService.findIndexShowAll(pageVo);
 
     }

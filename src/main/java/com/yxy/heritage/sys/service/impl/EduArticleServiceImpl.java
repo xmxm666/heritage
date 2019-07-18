@@ -33,7 +33,7 @@ public class EduArticleServiceImpl implements EduArticleService {
     //通知公告
     @Override
     public WebResult queryAllNotice(PageVo pageVo) {
-        //查询：1-通知公告, 3-校园介绍, 4-联盟资讯, 5-政策法规
+        //查询：1-集展活动, 3-公司介绍,  4-加盟资讯,   5-作品展示  ，6.名家风采
         //可以看见所有学校联盟资讯
         Integer schoolId = null;
         String type = pageVo.getType();
