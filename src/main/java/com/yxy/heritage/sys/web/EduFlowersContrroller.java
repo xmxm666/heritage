@@ -26,7 +26,7 @@ public class EduFlowersContrroller {
     public WebResult totalFlower(HttpServletRequest request) {
         String userId = request.getHeader("userId");
         if(StringUtils.isBlank(userId) || userId.equals("null")) {
-            return new WebResult("400", "请登录！", "");
+            return new WebResult("50012", "请登录！", "");
         }
         return flowersService.totalFlower(Integer.valueOf(userId));
     }
@@ -36,7 +36,7 @@ public class EduFlowersContrroller {
     public WebResult flowerList(HttpServletRequest request) {
         String userId = request.getHeader("userId");
         if(StringUtils.isBlank(userId) || userId.equals("null")) {
-            return new WebResult("400", "请登录！", "");
+            return new WebResult("50012", "请登录！", "");
         }
         return flowersService.flowerList(Integer.valueOf(userId));
     }

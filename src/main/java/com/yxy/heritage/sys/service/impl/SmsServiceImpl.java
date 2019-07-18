@@ -42,7 +42,7 @@ public class SmsServiceImpl implements SmsService {
 
         //设置两分钟内不能重发
         long expire = redisUtil.getExpire(key);
-        if (expire > 2 * 60) {
+        if (expire > 8 * 60) {
             return new WebResult("400", "您操作太频繁", "");
         }
 

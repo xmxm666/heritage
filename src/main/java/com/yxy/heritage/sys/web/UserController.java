@@ -1,15 +1,11 @@
 
 package com.yxy.heritage.sys.web;
 
-import com.jfinal.aop.Before;
-
 import com.yxy.heritage.http.result.WebResult;
 import com.yxy.heritage.sys.bean.User;
 import com.yxy.heritage.sys.service.UserService;
-import com.yxy.heritage.sys.vo.PageVo;
 import com.yxy.heritage.sys.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +65,7 @@ public class UserController {
     public WebResult updatePasswordByOldpass(@RequestBody UserVo user, HttpServletRequest request) {
         String userId = request.getHeader("userId");
         if(StringUtils.isBlank(userId)) {
-            return new WebResult("400", "请登录！", "");
+            return new WebResult("50012", "请登录！", "");
         }
         user.setUserId(Integer.valueOf(userId));
         return userService.updatePasswordByOldPass(user);
@@ -97,7 +93,4 @@ public class UserController {
         String token = request.getHeader("token");
         return userService.userQuit(token);
     }
-
-
-
 }

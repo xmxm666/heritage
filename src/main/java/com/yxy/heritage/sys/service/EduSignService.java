@@ -9,4 +9,6 @@ import com.yxy.heritage.http.result.WebResult;
 public interface EduSignService {
 
     public WebResult sign(Integer userId);
+
+    public WebResult isSign(Integer userId);
 }

@@ -28,9 +28,22 @@ public class EduSignContrroller {
     public WebResult approve(HttpServletRequest request){
         String userId = request.getHeader("userId");
         if(StringUtils.isBlank(userId) || userId.equals("null")) {
-            return new WebResult("400", "请登录！", "");
+            return new WebResult("50012", "请登录！", "");
         }
         return signService.sign(Integer.valueOf(userId));
+    }
+
+    /**
+     * 查询是否签到
+     * @return
+     */
+    @GetMapping(value = "/isSign")
+    public WebResult isSign(HttpServletRequest request){
+        String userId = request.getHeader("userId");
+        if(StringUtils.isBlank(userId) || userId.equals("null")) {
+            return new WebResult("50012", "请登录！", "");
+        }
+        return signService.isSign(Integer.valueOf(userId));
     }
 }
 
