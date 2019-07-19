@@ -4,6 +4,7 @@ import com.yxy.heritage.http.result.WebResult;
 import com.yxy.heritage.sys.bean.Approve;
 import com.yxy.heritage.sys.dao.ApproveMapper;
 import com.yxy.heritage.sys.service.ApproveService;
+import com.yxy.heritage.sys.service.WorksShowService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,9 @@ public class ApproveServiceImpl implements ApproveService {
 
     @Resource
     private ApproveMapper approveMapper;
+
+    @Autowired
+    private WorksShowService worksShowService;
 
 
     @Override
@@ -53,6 +57,14 @@ public class ApproveServiceImpl implements ApproveService {
             approveMapper.updateApproveCount(approve);
         }
         //todo   待添加各种类型的点赞总数
+        //类型  5-作品展示， 6-教师风采
+
+        if(type.equals(5)) {
+            worksShowService.addThumbup(typeId);
+        }
+        if(type.equals(6)) {
+            worksShowService.addTeacherThumbup(typeId);
+        }
 
         return new WebResult("200", "点赞成功", "");
     }
