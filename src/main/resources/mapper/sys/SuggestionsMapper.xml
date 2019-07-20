@@ -9,8 +9,12 @@
       </insert>
         <!--意见反馈列表-->
       <select id="SuggestionsList" parameterType="com.yxy.heritage.sys.vo.SuggestionsVo" resultType="com.yxy.heritage.sys.bean.Suggestions">
-            select s.id id,s.user_id userId,s.user_name userName,s.school_id schoolId,s.createtime createTime,s.content content,s.type type,
-            s.type_name typeName from edu_suggestions where 1=1
+          select s.id id,s.user_id userId,u.user_name userName,s.school_id schoolId,s.createtime createTime,s.content content,s.type type,
+          s.type_name typeName from
+          edu_suggestions s,
+          edu_user u
+          where
+          s.user_id=u.user_id
           <if test="id!=null">
               and  s.id=#{id}
           </if>
