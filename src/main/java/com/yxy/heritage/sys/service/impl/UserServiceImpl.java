@@ -231,13 +231,13 @@ public class UserServiceImpl implements UserService {
         if (StringUtils.isBlank(securityCode)) {
             return new WebResult("400", "验证码不能为空！", "");
         }
-        /*Object value = redisUtil.get(ConstantClassField.SEND_SMS + newPhone);
+        Object value = redisUtil.get(ConstantClassField.SEND_SMS + newPhone);
         if (value == null) {
             return new WebResult("400", "验证码失效");
         }
         if (!securityCode.equals(value.toString())) {
             return new WebResult("400", "验证码错误");
-        }*/
+        }
 
         User newUser = userMapper.selectByIdOrPhone(null, newPhone);
         if (newUser != null) {
