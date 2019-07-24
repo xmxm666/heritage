@@ -71,8 +71,8 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, user_id, couser_name, couser_price, school_id, pay_status, course_id
-  </sql>
+        id, user_id, couser_name, couser_price, school_id, pay_status, course_id
+    </sql>
     <select id="selectByExample" parameterType="com.yxy.heritage.sys.bean.EduOfflineOrderitemExample"
             resultMap="BaseResultMap">
         select
@@ -103,9 +103,9 @@
         where id = #{id,jdbcType=INTEGER}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from edu_offline_orderitem
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
+        delete from edu_offline_orderitem
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
     <delete id="deleteByExample" parameterType="com.yxy.heritage.sys.bean.EduOfflineOrderitemExample">
         delete from edu_offline_orderitem
         <if test="_parameter != null">
@@ -243,13 +243,13 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.yxy.heritage.sys.bean.EduOfflineOrderitem">
-    update edu_offline_orderitem
-    set user_id = #{userId,jdbcType=INTEGER},
-      couser_name = #{couserName,jdbcType=VARCHAR},
-      couser_price = #{couserPrice,jdbcType=DECIMAL},
-      school_id = #{schoolId,jdbcType=INTEGER},
-      pay_status = #{payStatus,jdbcType=VARCHAR},
-      course_id = #{courseId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+        update edu_offline_orderitem
+        set user_id = #{userId,jdbcType=INTEGER},
+        couser_name = #{couserName,jdbcType=VARCHAR},
+        couser_price = #{couserPrice,jdbcType=DECIMAL},
+        school_id = #{schoolId,jdbcType=INTEGER},
+        pay_status = #{payStatus,jdbcType=VARCHAR},
+        course_id = #{courseId,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
 </mapper>

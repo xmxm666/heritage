@@ -1,4 +1,5 @@
 package com.yxy.heritage.sys.service;
+
 import com.yxy.heritage.sys.bean.Order;
 import com.yxy.heritage.sys.vo.OrderVo;
 import com.yxy.heritage.sys.vo.SubmitOrderVos;
@@ -42,6 +43,10 @@ public interface OrderService {
 
     //显示相关订单详情页面
     SubmitOrderVos showOrders(OrderVo orderVo);
+
+    //更改订单的状态
+    Integer updateOrderStatus(Order order);
+
 
 
 

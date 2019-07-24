@@ -7,15 +7,10 @@ import com.yxy.heritage.http.result.WebResult;
 import com.yxy.heritage.sys.bean.EduClass;
 import com.yxy.heritage.sys.bean.EduCourse;
 import com.yxy.heritage.sys.bean.School;
-import com.yxy.heritage.sys.dao.EduClassMapper;
-import com.yxy.heritage.sys.dao.EduCourseMapper;
-import com.yxy.heritage.sys.dao.SchoolMapper;
-import com.yxy.heritage.sys.dao.UserMapper;
+import com.yxy.heritage.sys.dao.*;
 import com.yxy.heritage.sys.service.EduCourseService;
-import com.yxy.heritage.sys.vo.AdminVo;
 import com.yxy.heritage.sys.vo.EduCourseVo;
 import com.yxy.heritage.sys.vo.PageCourseVo;
-import com.yxy.heritage.sys.vo.PageVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -45,6 +42,13 @@ public class EduCourseServiceImpl implements EduCourseService {
     @Resource
     private SchoolMapper schoolMapper;
 
+    @Resource
+    private OrderMapper orderMapper;
+
+    @Resource
+    private EduOfflineOrderMapper eduOfflineOrderMapper;
+
+
     /**
      * 按学校的id来查找专业类别
      *
@@ -55,6 +59,56 @@ public class EduCourseServiceImpl implements EduCourseService {
     public List<EduCourse> listCourseCategoryByShoolId(EduCourse eduCourse) {
         return eduCourseMapper.listCourseCategoryByShoolId(eduCourse);
     }
+
+    @Override
+    public Map<String, Object> queryCourseByCourseId(Integer userId, Integer courseId, HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> param = new HashMap<>();
+
+     /*   String schoolId1 = request.getHeader("schoolId");
+        Integer schoolId = Integer.parseInt(schoolId1);*/
+        Integer schoolId = 1;
+
+        //0.可以报名的人数
+        //查询专业接受报名的人数
+        int acceptNum = eduCourseMapper.queryAcceptNum(courseId);
+
+        if (acceptNum == 0) {
+            map.put("本专业未设置可报名的人数，请管理员设置报名人数限制", "");
+        }
+        //查询用户所对应的专业显示已经购买人数
+        param.put("course_id", courseId);
+        param.put("payment_status", OrderStatus.PAY);
+        int olineNum = orderMapper.countPayCourseNum(param);
+
+        //查询用户所对应的专业线下的总人数
+        Integer offNum = eduOfflineOrderMapper.queryOffRecordNum(courseId);
+
+        //得到最终报名人数
+        Integer payNum = olineNum + offNum;
+
+        if (payNum >= acceptNum) {
+            map.put("人数已满，请下期再报名", "");
+            return map;
+        }
+        //可报名剩余人数
+        int nowtotal = acceptNum - payNum;
+        EduCourseVo courseInfo = applyCourse(userId, courseId);
+        nowtotal--;
+        map.put("该课程没有任何条件制约，可以报名,报名还剩" + nowtotal + "个名额，请赶紧抢购", courseInfo);
+        return map;
+    }
+
+    public EduCourseVo applyCourse(Integer userId, Integer courseId) {
+        //1.根据courseId查询订单的信息
+        EduCourseVo courseInfo = eduCourseMapper.queryCourseByCourseId(courseId);
+        //2.根据courseId查询开课的具体时间
+        List<EduClass> eduClasses = eduClassMapper.queryCourseTimeByCourseId(courseId);
+        //3.生成报名详情信息
+        courseInfo.setClassList(eduClasses);
+        return courseInfo;
+    }
+
 
     @Override
     public EduCourseVo queryCourseByCategory(Integer courseId) {
@@ -97,6 +151,11 @@ public class EduCourseServiceImpl implements EduCourseService {
             }
         }
         return i;
+    }
+
+    @Override
+    public EduCourse queryEndTimeByCourseId(Integer courseId) {
+        return null;
     }
 
     /**

@@ -2,11 +2,8 @@ package com.yxy.heritage.sys.dao;
 
 
 import com.yxy.heritage.sys.bean.User;
-import com.yxy.heritage.sys.vo.PageVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @ClassName UserMapper
@@ -29,4 +26,6 @@ public interface UserMapper {
     //更换手机号
     public void updatePhone(@Param("oldPhone") String oldPhone, @Param("newPhone") String newPhone);
 
+    //根据id查找用户
+    public User selectById(@Param("userId") Integer userId);
 }

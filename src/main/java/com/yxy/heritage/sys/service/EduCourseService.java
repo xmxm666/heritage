@@ -1,13 +1,12 @@
 package com.yxy.heritage.sys.service;
 
+
 import com.yxy.heritage.http.result.WebResult;
 import com.yxy.heritage.sys.bean.EduCourse;
 import com.yxy.heritage.sys.vo.EduCourseVo;
 import com.yxy.heritage.sys.vo.PageCourseVo;
-import com.yxy.heritage.sys.vo.PageVo;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +29,7 @@ public interface EduCourseService {
      * @param courseId
      * @return
      */
-//    public Map<String, Object> queryCourseByCourseId(Integer user_id, Integer courseId, HttpServletRequest request);
+    public Map<String, Object> queryCourseByCourseId(Integer userId, Integer courseId, HttpServletRequest request);
 
     EduCourseVo queryCourseByCategory(Integer courseId);
 
@@ -52,6 +51,9 @@ public interface EduCourseService {
      */
     int updateAllTime(EduCourse eduCourse);
 
+    //根据课程id获取结束时间
+    EduCourse queryEndTimeByCourseId(Integer courseId);
+
     public WebResult createCourse(EduCourseVo courseVo);
 
     public WebResult courseList(PageCourseVo pageCourseVo);
@@ -65,5 +67,4 @@ public interface EduCourseService {
 
     //下架过期课程
     public void shelvesCourse();
-
 }

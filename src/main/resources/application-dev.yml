@@ -16,7 +16,7 @@ logging:
 
 spring:
   application:
-    name: old-university
+    name: heritage
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
@@ -38,9 +38,6 @@ spring:
       maxFileSize: 100MB
       maxRequestSize: 100MB
 
-fastdfs:
-    charset: UTF-8
-    tracker_servers: 120.27.16.130:22122
 
 qiniuyun:
   accessKey: RgylyW1vR0eqiPV2YjKX1avdm-IRiXHSqt0wlyac

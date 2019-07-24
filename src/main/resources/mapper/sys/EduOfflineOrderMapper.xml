@@ -318,43 +318,43 @@
 
     <!--1.查找线下报名记录-->
     <select id="queryAllOffRecord" parameterType="Integer" resultType="com.yxy.heritage.sys.vo.EduOfflineOrderVo">
-  	 		select
-	a.payment_address,
-	a.payment_starttime,
-	a.payment_endtime,
-	o.id,
-	o.user_id,
-	o.course_id,
-	o.school_name,
-	o.course_name,
-	o.couse_price,
-	o.course_teacher,
-	o.pay_status,
-	o.user_name,
-	c.start_date,
-	c.end_date,
-	s.image
-	from edu_offline_order o
-	left JOIN
-	edu_offline_addresstime a on a.school_id=o.school_id
-	left JOIN
-	edu_school s on  s.school_id = o.school_id
-	left JOIN
-	edu_course c on c.course_id = o.course_id
-		where user_id =#{userId}
-  </select>
+        select
+        a.payment_address,
+        a.payment_starttime,
+        a.payment_endtime,
+        o.id,
+        o.user_id,
+        o.course_id,
+        o.school_name,
+        o.course_name,
+        o.couse_price,
+        o.course_teacher,
+        o.pay_status,
+        o.user_name,
+        c.start_date,
+        c.end_date,
+        s.image
+        from edu_offline_order o
+        left JOIN
+        edu_offline_addresstime a on a.school_id=o.school_id
+        left JOIN
+        edu_school s on s.school_id = o.school_id
+        left JOIN
+        edu_course c on c.course_id = o.course_id
+        where user_id =#{userId}
+    </select>
 
 
     <!--2.查找线下报名记录-->
     <select id="queryOffRecordNum" parameterType="Integer" resultType="Integer">
-  		      select
-                count(*)
-                from
-                edu_offline_order
-                where
-                course_id=#{courseId} and
-                pay_status =1
-  </select>
+        select
+        count(*)
+        from
+        edu_offline_order
+        where
+        course_id=#{courseId} and
+        pay_status =1
+    </select>
 
 
     <!--    3.查找线下报名门数
@@ -371,14 +371,14 @@
 
     <!--3.查找线下报名门数-->
     <select id="queryCountCourseNum" parameterType="Integer" resultType="Integer">
-  		      select
-                count(course_id)
-                from
-                edu_offline_num
-                where
-                user_id =#{userId}
-                and pay_status=2
-  </select>
+        select
+        count(course_id)
+        from
+        edu_offline_num
+        where
+        user_id =#{userId}
+        and pay_status=2
+    </select>
 
 
 </mapper>

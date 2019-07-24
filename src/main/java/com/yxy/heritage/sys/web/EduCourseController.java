@@ -1,6 +1,5 @@
 package com.yxy.heritage.sys.web;
 
-
 import com.yxy.heritage.constant.ConstantClassField;
 import com.yxy.heritage.http.result.StatusCode;
 import com.yxy.heritage.http.result.WebResult;
@@ -42,13 +41,14 @@ public class EduCourseController {
      */
     @GetMapping(value = "showCategory")
     public WebResult queryAllCourse(HttpServletRequest request) {
-        String schoolId1 = request.getHeader("schoolId");
+
+/*    String schoolId1 = request.getHeader("schoolId");
         //判断报名的学校不能为空
         if (schoolId1.equals("null")) {
             return new WebResult(StatusCode.ERROR, "报名的学校不能为空，请填写基本信息里的报名学校", "");
         }
-        Integer schoolId = Integer.parseInt(schoolId1);
-
+        Integer schoolId = Integer.parseInt(schoolId1);*/
+        Integer schoolId = 1;
 
         EduCourse course = new EduCourse();
         course.setSchoolId(String.valueOf(schoolId));
@@ -97,7 +97,7 @@ public class EduCourseController {
     @GetMapping(value = "order")
     public WebResult queryCourseInfoById(@RequestParam(value = "courseId") Integer courseId, HttpServletRequest request) {
 
-        String userId1 = request.getHeader("userId");
+   /*     String userId1 = request.getHeader("userId");
         if (userId1.equals("null")) {
             return new WebResult(StatusCode.ERROR, "请先登录再购买", "");
         }
@@ -105,25 +105,18 @@ public class EduCourseController {
 
 
         String schoolId1 = request.getHeader("schoolId");
-        Integer schoolId = Integer.parseInt(schoolId1);
-
+        Integer schoolId = Integer.parseInt(schoolId1);*/
+        Integer schoolId1 = 1;
+        Integer userId = 1;
         //判断报名的学校不能为空
         if (schoolId1.equals("null")) {
             return new WebResult(StatusCode.ERROR, "报名的学校不能为空，请填写基本信息里的报名学校", "");
         }
-       /* User user = userService.queryUserInfo(userId);
+    /*    User user = userService.queryUserInfo(userId);
         if (user == null) {
             return new WebResult(StatusCode.ERROR, "请到学员中心完善好自己的报名学校，方可报名！", "");
         }
-
-        //判断是否是通过正式学员，没有通过则不能报名
-        if (user.getSchoolId() != schoolId) {
-            return new WebResult(StatusCode.ERROR, "您填写报名的学校是:【" + user.getSchoolName() + "】——————请到基本信息切换正确的报名学校，方可报名！", "");
-        }
-        if (user.getCheckin() != 0) {
-            return new WebResult(StatusCode.ERROR, "您还不是正式学员，正在审核中，请耐心等待", "");
-        }
-
+    */
         if (courseId == null) {
             return new WebResult(StatusCode.ERROR, "课程id不能为空", "");
         }
@@ -141,7 +134,7 @@ public class EduCourseController {
                 }
                 return new WebResult(StatusCode.OK, message, eduCourseVo);
             }
-        }*/
+        }
         return new WebResult(StatusCode.ERROR, "查询没有数据", "");
     }
 

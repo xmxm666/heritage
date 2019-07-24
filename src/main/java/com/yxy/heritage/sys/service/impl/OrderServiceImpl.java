@@ -85,14 +85,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDetailVo> orderItemsVo = submitOrderVos.getOrderItemsVo();
         //生存一对多的关系
         for (OrderDetailVo orderItem : orderItemsVo) {
-//            OrderDetailExample orderDetailExample = new OrderDetailExample();
-//            orderDetailExample.createCriteria().andCourseIdEqualTo(Long.valueOf(orderItem.getGoodsId()));
-//            List<OrderDetail> orderDetails = orderDetailMapper.selectByExample(orderDetailExample);
-//            if (orderDetails.size() == 0) {
             OrderDetail orderDetail = new OrderDetail();
-                /*if (order.getId() == null) {
-                    orderMapper.insertSelective(order);
-                }*/
             //生成订单详情
             orderDetail.setOrderId(Long.valueOf(order.getId()));
             orderDetail.setNum(orderItem.getNum());
@@ -112,10 +105,6 @@ public class OrderServiceImpl implements OrderService {
             EduCartExample eduCartExample = new EduCartExample();
             eduCartExample.createCriteria().andUserIdEqualTo(userId).andGoodsIdEqualTo(orderItem.getGoodsId());
             eduCartMapper.deleteByExample(eduCartExample);
-            /*    return;
-            } else {
-                return;
-            }*/
         }
 
 
@@ -187,41 +176,10 @@ public class OrderServiceImpl implements OrderService {
         return submitOrderVos;
     }
 
-
-
-    /*
-     */
-/**
- * 根据用户id查询已付款的订单
- * @param userId
- * @return
- *//*
-
     @Override
-    public List<OrderVo> queryAllOrder(int userId) {
-        return orderMapper.queryAllOrder(userId);
+    public Integer updateOrderStatus(Order order) {
+        int i = orderMapper.updateByPrimaryKeySelective(order);
+        return i;
     }
-*/
-
-    /*    *//**
-     * 根据用户id查询开课的具体时间点
-     * @param userId
-     * @return
-     *//*
-    public List<OrderVo> queryStartDateTimeByCouserId(int userId) {
-        return orderMapper.queryAllOrder(userId);
-    }
-
-
-    *//**
-     * 查询courseId
-     * @param userId
-     * @param status
-     * @return
-     *//*
-    @Override
-    public int queryForCourseId(int userId, int status) {
-        return orderMapper.queryCourseNumById(userId,status);
-    }*/
 
 }

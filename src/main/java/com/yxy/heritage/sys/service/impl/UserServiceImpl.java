@@ -8,17 +8,18 @@ import com.yxy.heritage.sys.service.UserService;
 import com.yxy.heritage.sys.utils.MD5Utils;
 import com.yxy.heritage.sys.utils.RedisUtil;
 import com.yxy.heritage.sys.utils.SecurityUtils;
-import com.yxy.heritage.sys.vo.PageVo;
 import com.yxy.heritage.sys.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.UUID;
 
 
 /**
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
         if (finduserbyphone == null) {
             return new WebResult("400", "您的手机号尚未注册！", "");
         }
-        String pasword = MD5Utils.md5Password(user.getPassword(),finduserbyphone.getSalt());
+        String pasword = MD5Utils.md5Password(user.getPassword(), finduserbyphone.getSalt());
         if (!pasword.equals(finduserbyphone.getPassword())) {
             return new WebResult("400", "输入的密码不正确！", "");
         }
@@ -166,8 +167,15 @@ public class UserServiceImpl implements UserService {
         return new WebResult("200", "修改密码成功", "");
     }
 
+    //通过用户Id查找用户对应字段信息
+    @Override
+    public User selectById(Integer userId) {
+        return userMapper.selectById(userId);
+    }
+
     /**
      * 修改密码 （根据原密码修改）
+     *
      * @param user
      * @return
      */
@@ -178,16 +186,16 @@ public class UserServiceImpl implements UserService {
         if (findUserByOldPass == null) {
             return new WebResult("400", "未找到对应用户");
         }
-        if(StringUtils.isBlank(user.getOldPassword())) {
+        if (StringUtils.isBlank(user.getOldPassword())) {
             return new WebResult("400", "原密码不能为空");
         }
         String newPassword = user.getNewPassword();
         String nextPass = user.getNextPass();
-        if(StringUtils.isBlank(newPassword) || StringUtils.isBlank(nextPass)) {
+        if (StringUtils.isBlank(newPassword) || StringUtils.isBlank(nextPass)) {
             return new WebResult("400", "新密码不能为空");
         }
         String oldPass = MD5Utils.md5Password(user.getOldPassword(), findUserByOldPass.getSalt());
-        if(!findUserByOldPass.getPassword().equals(oldPass)) {
+        if (!findUserByOldPass.getPassword().equals(oldPass)) {
             return new WebResult("400", "原密码错误");
         }
         //密码格式验证
@@ -252,5 +260,15 @@ public class UserServiceImpl implements UserService {
     public WebResult userQuit(String token) {
         redisUtil.delete(token);
         return new WebResult("200", "退出成功", "");
+    }
+
+    @Override
+    public User queryUserInfo(Integer userId) {
+        return null;
+    }
+
+    @Override
+    public User queryInfo(Integer userId) {
+        return null;
     }
 }

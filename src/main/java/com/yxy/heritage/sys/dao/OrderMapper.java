@@ -1,4 +1,5 @@
 package com.yxy.heritage.sys.dao;
+
 import com.yxy.heritage.sys.bean.Order;
 import com.yxy.heritage.sys.bean.OrderExample;
 import com.yxy.heritage.sys.vo.OrderVo;
@@ -65,8 +66,6 @@ public interface OrderMapper {
 
     //查询订单的数量
     int countOrderNum(Integer orderId);
-
-
 
 
 }
