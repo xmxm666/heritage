@@ -27,6 +27,18 @@ public class WorksShowController {
      private WorksShowService worksShowService;
 
     /**
+     * 手工艺人列表及模糊查询（分页）
+     *
+     * @param pageVo
+     * @return
+     */
+    @PostMapping(value = "/her/findHandicraftsmanAll")
+    public WebResult findHandicraftsmanAll(HttpServletRequest request, @RequestBody PageVo pageVo) {
+            pageVo.setType("7");
+        return worksShowService.findUserShowAll(pageVo);
+
+}
+    /**
      * 作品展示列表及模糊查询（分页）
      *
      * @param pageVo
