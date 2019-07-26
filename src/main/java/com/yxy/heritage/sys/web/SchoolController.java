@@ -122,6 +122,28 @@ public class SchoolController {
     }
 
     /**
+     * 切换学校
+     *
+     * @param
+     * @return
+     */
+    @GetMapping(value = "/school/switchSchool")
+    public WebResult switchSchool() {
+        return schoolService.switchSchool();
+    }
+
+    /**
+     * 切换学校ID
+     *
+     * @param
+     * @return
+     */
+    @GetMapping(value = "/school/switchSchoolID")
+    public WebResult switchSchoolID(@RequestParam(value = "SchoolId") Integer SchoolId, @RequestParam(value = "userId") Integer userId) {
+        return schoolService.switchSchoolID(SchoolId, userId);
+    }
+
+    /**
      * 查询所有学校（学校名字和学校Id）
      *
      * @param
