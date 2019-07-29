@@ -29,6 +29,13 @@
         </if>
     </select>
 
+    <select id="selectById" resultType="com.yxy.heritage.sys.bean.User">
+        select
+        <include refid="Base_Column_List"/>
+        from edu_user
+        where user_id=#{userId}
+    </select>
+
     <!--用户注册-->
     <insert id="registUser" parameterType="com.yxy.heritage.sys.bean.User" useGeneratedKeys="true"
             keyProperty="userId">

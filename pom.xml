@@ -146,12 +146,6 @@
             <version>2.5.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.csource</groupId>
-            <artifactId>fastdfs-client-java</artifactId>
-            <version>1.27-SNAPSHOT</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.jfinal/jfinal -->
         <dependency>
             <groupId>com.jfinal</groupId>

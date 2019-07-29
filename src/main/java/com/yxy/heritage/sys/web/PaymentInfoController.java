@@ -285,7 +285,7 @@ public class PaymentInfoController {
         Integer schoolId = Integer.parseInt(schoolId1);
 
         //查询学员的基本信息
-        User user = userService.queryInfo(userId);
+        User user = userService.selectById(userId);
         //查询学员的课程信息
         EduCourseVo eduCourseVo = eduCourseMapper.queryCourseInfo(courseId);
 

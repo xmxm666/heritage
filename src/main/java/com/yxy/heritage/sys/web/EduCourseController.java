@@ -42,13 +42,12 @@ public class EduCourseController {
     @GetMapping(value = "showCategory")
     public WebResult queryAllCourse(HttpServletRequest request) {
 
-/*    String schoolId1 = request.getHeader("schoolId");
+        String schoolId1 = request.getHeader("schoolId");
         //判断报名的学校不能为空
         if (schoolId1.equals("null")) {
             return new WebResult(StatusCode.ERROR, "报名的学校不能为空，请填写基本信息里的报名学校", "");
         }
-        Integer schoolId = Integer.parseInt(schoolId1);*/
-        Integer schoolId = 1;
+        Integer schoolId = Integer.parseInt(schoolId1);
 
         EduCourse course = new EduCourse();
         course.setSchoolId(String.valueOf(schoolId));
